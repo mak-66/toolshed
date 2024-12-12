@@ -1,0 +1,39 @@
+.tool-image {
+    width: 100px;  
+    height: 100px;
+  }
+
+/* ai */
+.item-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);  
+gap: 16px;  
+list-style: none;
+padding: 0;
+margin: 0;
+}
+
+
+.item-card {
+width: 100%;
+display: flex;
+flex-direction: column;
+}
+
+@media (max-width: 1200px) {
+    .item-grid {
+      grid-template-columns: repeat(3, 1fr); 
+    }
+  }
+  
+@media (max-width: 900px) {
+.item-grid {
+    grid-template-columns: repeat(2, 1fr); 
+}
+}
+
+@media (max-width: 600px) {
+.item-grid {
+    grid-template-columns: 1fr; 
+}
+}
