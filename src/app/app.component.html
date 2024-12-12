@@ -6,16 +6,14 @@
   <title>Tool List</title>
 </head>
 <body>
-  @if (tools && tools.length) {
-    @for(tool of tools; track $index){
-      <img [src]="tool.imageUrl" alt="{{ tool.name }}" class="tool-image" />
-      <h2>{{ tool.name }}</h2>
-      <p>{{ tool.description }}</p>
-      <p>Owner: {{ tool.ownerPublicName }}</p>
-      <p>Status: {{ tool.availabilityStatus ? 'Available' : 'Unavailable' }}</p>
-    }
-  } @else {
-    <p>No tools available at the moment.</p>
+  <h1>Tool Shed</h1>
+  <button (click)="addRandomTool()">Add Random Tool</button>
+  @for(tool of toolshedService.tools$ | async; track $index){
+    <img [src]="tool.imageUrl" alt="{{ tool.name }}" class="tool-image" />
+    <h2>{{ tool.name }}</h2>
+    <p>{{ tool.description }}</p>
+    <p>Owner: {{ tool.ownerPublicName }}</p>
+    <p>Status: {{ tool.availabilityStatus ? 'Available' : 'Unavailable' }}</p>
   }
 </body>
 </html>
