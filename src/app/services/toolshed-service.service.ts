@@ -1,6 +1,8 @@
 // Import necessary Firebase modules
 import { Injectable, inject } from '@angular/core';
-import { Timestamp, query, orderBy, Firestore, addDoc, collection, collectionData, CollectionReference } from '@angular/fire/firestore';
+import { Timestamp, query, orderBy, setDoc, Firestore, doc, collection, collectionData, CollectionReference } from '@angular/fire/firestore';
+import { getAuth, createUserWithEmailAndPassword } from "@angular/fire/auth";
+
 import { Observable } from 'rxjs';
 
 // Define data models
@@ -12,6 +14,7 @@ export interface User {
 
 
 export interface Tool {
+  id: string;
   name: string;
   imageUrl: string;
   description: string;
@@ -37,6 +40,8 @@ export class toolshedService {
   public tools$: Observable<Tool[]>; // Observable for live updates
   public users$: Observable<User[]>; // Observable for live updates
   // public reviews$: Observable<Review[]>; // Observable for live updates
+  
+  auth = getAuth();
 
   constructor() {
     //fetches the tools
@@ -50,13 +55,26 @@ export class toolshedService {
     this.users$ = collectionData<User>(q);
   }
   
-  addTool(newTool: Tool): Promise<void> {
-    return addDoc(this.toolCollection, newTool)
-      .then(() => {
-        console.log('Tool successfully added to the database!');
-      })
-      .catch((error) => {
-        console.error('Error adding tool: ', error);
-      });
+  async addTool(newTool: Omit<Tool, 'id'>): Promise<string> {
+    try {
+      const toolDocRef = doc(this.toolCollection); // Create a reference with an auto-generated ID
+      const id = toolDocRef.id; // Get the generated ID
+
+      // Add the tool to Firestore, including the generated ID
+      await setDoc(toolDocRef, {
+        ...newTool,
+        id, // Add the generated ID to the document
+        timestamp: Timestamp.fromDate(new Date()), // Optionally include a timestamp
+      });      
+      console.log('Tool successfully added with ID:', id);
+      return(id);
+    } catch (error) {
+      console.error('Error adding tool:', error);
+    }
+    return("Failed to add tool");
   }
+
+  // createUser(auth , email, password): boolean{
+  //   return true;
+  // }
 }

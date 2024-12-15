@@ -8,17 +8,19 @@
 <body>
     <ul class="item-grid">
         @for(tool of toolshedService.tools$ | async; track $index){
-            <mat-card class="item-card">
-            <mat-card-header>
-                <mat-card-title class="card-title">{{ tool.name }}</mat-card-title>
-                <mat-card-subtitle class="status">{{ tool.availabilityStatus ? 'Available' : 'Unavailable' }}</mat-card-subtitle>
-            </mat-card-header>
-            
-            <mat-card-content>
-                <img mat-card-sm-image [src]="tool.imageUrl" alt="{{ tool.name }}" class="tool-image" />
-                <p>Owner: {{ tool.ownerPublicName }}</p>
-            </mat-card-content>
-            </mat-card>
+            <a [routerLink]="'/tooldetail' + tool.id" class = "item-link">
+                <mat-card class="item-card">                
+                    <mat-card-header>                
+                        <mat-card-title class="card-title">{{ tool.name }}</mat-card-title>
+                        <mat-card-subtitle class="status">{{ tool.availabilityStatus ? 'Available' : 'Unavailable' }}</mat-card-subtitle>
+                    </mat-card-header>
+                    
+                    <mat-card-content>
+                        <img mat-card-sm-image [src]="tool.imageUrl" alt="{{ tool.name }}" class="tool-image" />
+                        <p>Owner: {{ tool.ownerPublicName }}</p>
+                    </mat-card-content>
+                    </mat-card>
+            </a>
         }
   
     <li>No more products available</li>

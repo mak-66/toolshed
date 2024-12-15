@@ -22,6 +22,7 @@ export class UploadPageComponent {
   addToolFromInput() {
     if (this.toolName && this.toolDescription && this.toolOwner) {
       const newTool: Tool = {
+        id: "placeholder",
         name: this.toolName,
         description: this.toolDescription,
         imageUrl: 'https://example.com/hammer.jpg',

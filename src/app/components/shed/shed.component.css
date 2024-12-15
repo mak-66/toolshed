@@ -13,6 +13,11 @@ padding: 0;
 margin: 0;
 }
 
+/* image scaling: max-width */
+
+.item-link {
+  text-decoration: none;
+}
 
 .item-card {
 width: 100%;
