@@ -28,6 +28,7 @@ export class UploadPageComponent {
         imageUrl: 'https://example.com/hammer.jpg',
         ownerPublicName: this.toolOwner,  // Can be dynamically set if needed
         availabilityStatus: this.toolAvailabilityStatus,  // Use user input for availability status
+        waitlist: []
       };
 
       // Call the addTool method to add the tool to Firestore
