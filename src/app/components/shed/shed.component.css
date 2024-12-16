@@ -1,60 +1,56 @@
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: #F4F4F4; /* Light background */
-  color: #333333; /* Default text color */
+  background-color: #F4F4F4; 
+  color: #333333; 
   margin: 0;
   padding: 0;
 }
-
-/* Make the title and toolbar appear on the same line */
 .header-container {
-  display: flex;                      /* Use flexbox to align items in a row */
-  justify-content: space-between;      /* Space out the title and toolbar */
-  align-items: center;                /* Vertically center the items */
-  padding: 10px 20px;                 /* Add some padding around */
+  display: flex;                      
+  justify-content: space-between;
+  align-items: center; 
+  padding: 10px 20px; 
   background-color: #FFFFFF;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
   font-size: 2.5rem;
-  color: #6B8E23;
-  margin: 0;                           /* Remove margin for the title */
-  font-size: 2rem;                     /* Adjust font size for the title */
+  color: #6B8;
+  margin: 0;                           
+  font-size: 2rem;                     
   white-space: nowrap;
   text-align: center;
 }
 
-/* Toolbar styling */
 .toolbar {
-  display: flex;                      /* Use flexbox for toolbar links */
-  justify-content: flex-start;           /* Align toolbar items to the left */
-  align-items: center;                 /* Vertically center the items */
+  display: flex; 
+  justify-content: flex-start; 
+  align-items: center;
   margin-left: 50px;
 }
 
 .toolbar span {
-  display: flex;                      /* Flexbox for toolbar content */
-  gap: 70px;                          /* Space between items */
+  display: flex;
+  gap: 70px;    
 }
 
 .toolbar mat-icon {
   color: #6B8E23;
-  margin-right: -60px;                   /* Space between icon and link */
+  margin-right: -60px; 
 }
 
 .toolbar a {
   text-decoration: none;
-  color: #333333; /* Default text color */
+  color: #333333; 
   font-weight: bold;
   font-size: 1.2rem;
 }
 
 .toolbar a:hover {
-  color: #87CEEB; /* Sky Blue for hover effect */
+  color: #87CEEB; 
 }
 
-/* Existing tool image and grid styles */
 .tool-image {
   width: 100%;
   height: 200px;
@@ -108,8 +104,8 @@ h1 {
 }
 
 .item-card:hover {
-  transform: scale(1.05); /* Slight zoom effect on hover */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Larger shadow on hover */
+  transform: scale(1.05); 
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
 }
 
 mat-card {

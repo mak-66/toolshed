@@ -289,7 +289,7 @@ export class toolshedService {
       throw error;
     }
   }
-
+  // Allows user to enter waitlist in tooldetails
   async enterWaitlist(toolId: string, currentAccount: Account): Promise<void> {
     try {
       const toolDocRef = doc(this.firestore, 'Tools', toolId);
