@@ -7,7 +7,7 @@
 </head>
 <body>
     <ul class="item-grid">
-        @for(tool of toolshedService.tools$ | async; track $index){
+        @for(tool of toolshedService.communityTools$ | async; track $index){
             <a [routerLink]="'/tooldetail/' + tool.id" class="item-link">
                 <mat-card class="item-card">                
                     <mat-card-header>            

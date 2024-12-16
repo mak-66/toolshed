@@ -2,7 +2,9 @@
 import { Injectable, inject } from '@angular/core';
 import { Timestamp, query, orderBy, where, addDoc, deleteDoc, getDoc, getDocs, setDoc, updateDoc, Firestore, doc, collection, collectionData, CollectionReference } from '@angular/fire/firestore';
 import { User, Auth, getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "@angular/fire/auth";
-import { Observable, firstValueFrom } from 'rxjs';
+import { Observable, firstValueFrom,map,BehaviorSubject, combineLatest } from 'rxjs';
+import { Router } from '@angular/router';
+
 
 // Define data models
 export interface Account {
@@ -31,14 +33,15 @@ export interface Tool {
 })
 export class toolshedService {
   firestore: Firestore = inject(Firestore);
+  router: Router = inject(Router)
   auth: Auth = getAuth();
   user: User | null = null;
   currentAccount: Account | null = null;
   toolCollection: CollectionReference;
   accountCollection: CollectionReference;
   public tools$: Observable<Tool[]>; // Observable for live updates
+  public communityTools$: Observable<Tool[]>;
   public accounts$: Observable<Account[]>; // Observable for live updates
-  // public reviews$: Observable<Review[]>; // Observable for live updates
   
   constructor() {
     //fetches the tools
@@ -56,6 +59,20 @@ export class toolshedService {
       this.user = currentUser;
       console.log('Auth state changed, user is now:', this.user);
     });
+
+    this.communityTools$ = combineLatest([this.tools$, this.accounts$]).pipe(
+      map(([tools, accounts]) => {
+        // Check if currentAccount is set and has a valid communityCode
+        if (this.currentAccount) {
+          const communityCode = this.currentAccount.communityCode;
+
+          // Filter tools by the communityCode of the currentAccount
+          return tools.filter(tool => tool.communityCode === communityCode);
+        }
+        // If no currentAccount, return an empty array
+        return [];
+      })
+    );
   }
 
   async fetchTool(id: string): Promise<Tool | undefined> {
@@ -67,6 +84,37 @@ export class toolshedService {
       return undefined;
     }
   }
+
+  async fetchCommunityTools(): Promise<Tool[]> {
+    try {
+      if (!this.currentAccount) {
+        throw new Error('No current account is logged in');
+      }
+  
+      const communityCode = this.currentAccount.communityCode; // Get the user's community code
+  
+      // Query tools belonging to the same community
+      const toolsQuery = query(
+        this.toolCollection,
+        where('communityCode', '==', communityCode) // Filter by community code
+      );
+  
+      const querySnapshot = await getDocs(toolsQuery);
+  
+      if (querySnapshot.empty) {
+        return []; // No tools found
+      }
+  
+      // Map the document snapshots to Tool objects
+      const tools: Tool[] = querySnapshot.docs.map(doc => doc.data() as Tool);
+      
+      return tools;
+    } catch (error) {
+      console.error('Error fetching community tools:', error);
+      throw error;
+    }
+  }
+  
 
   async fetchAccount(email: string): Promise<Account> {
     try {
@@ -102,7 +150,7 @@ export class toolshedService {
       console.log('Tool successfully added with ID:', id);
   
       // Now, update the owner's 'ownedTools' field in their account document
-      if (this.currentAccount) {
+      if (this.currentAccount) {  
         const accountsQuery = query(
           collection(this.firestore, 'Accounts'),
           where('email', '==', this.currentAccount.email)
@@ -284,6 +332,14 @@ export class toolshedService {
       const accountDocRef = querySnapshot.docs[0].ref;  // Get the reference to the first document found
       await updateDoc(accountDocRef, updates);  // Update the document with the provided changes
       console.log('Account updated successfully');
+      
+      // Check if communityCode is being updated in the updates
+      if ('communityCode' in updates) {
+        // If communityCode is being changed, log the user out
+        console.log('Community code is changing, logging out the user...');
+        await this.logout();
+      }
+    
     } catch (error) {
       console.error('Error updating account:', error);
       throw error;
@@ -374,6 +430,8 @@ export class toolshedService {
     signOut(this.auth).then(() => {
       // Sign-out successful.
       console.log('User logged out');
+      this.currentAccount = null;
+      this.router.navigate(['/']);
     })
   }
 }
