@@ -103,12 +103,26 @@ export class toolshedService {
   
       // Now, update the owner's 'ownedTools' field in their account document
       if (this.currentAccount) {
-        const accountDocRef = doc(this.firestore, 'Accounts', this.currentAccount.email);
+        const accountsQuery = query(
+          collection(this.firestore, 'Accounts'),
+          where('email', '==', this.currentAccount.email)
+        );
+      
+        const querySnapshot = await getDocs(accountsQuery);
+      
+        if (querySnapshot.empty) {
+          throw new Error(`No account found with email: ${this.currentAccount.email}`);
+        }
+      
+        // Get the first document from the query results
+        const accountDocRef = querySnapshot.docs[0].ref;
+      
         // Update the 'ownedTools' array by adding the new tool ID
         await updateDoc(accountDocRef, {
           ownedTools: [...this.currentAccount.ownedTools, id],
         });
-        console.log('Owner\'s ownedTools updated successfully');
+      
+        console.log("Owner's 'ownedTools' updated successfully");
       }
   
       return id; // Return the ID of the newly added tool
