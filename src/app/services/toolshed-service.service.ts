@@ -106,6 +106,26 @@ export class toolshedService {
     return("Failed to add tool");
   }
 
+  async updateTool(toolId: string, updates: Partial<Tool>): Promise<void> {
+    try {
+      // Reference the specific tool document by its ID
+      const toolDocRef = doc(this.firestore, 'Tools', toolId);
+  
+      // Check if the tool document exists
+      const toolSnap = await getDoc(toolDocRef);
+      if (!toolSnap.exists()) {
+        throw new Error(`Tool with ID ${toolId} does not exist`);
+      }
+  
+      // Update the tool document with the provided updates
+      await updateDoc(toolDocRef, updates);
+      console.log(`Tool with ID ${toolId} updated successfully.`);
+    } catch (error) {
+      console.error('Error updating tool:', error);
+      throw error; // Rethrow the error to be handled by the caller
+    }
+  }
+  
   //Creates the user for authentication, then calls createAccount to update the database
   async createUser(email: string, password: string, newAccount: Account): Promise<void> {
     createUserWithEmailAndPassword(this.auth, email, password)
@@ -113,7 +133,7 @@ export class toolshedService {
         // Signed up 
         this.user = userCredential.user;
         console.log('User successfully created:', this.user);
-        this.createAccount(newAccount);
+        this._createAccount(newAccount);
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -123,7 +143,7 @@ export class toolshedService {
   }
 
   // creates the account document
-  async createAccount(account: Account): Promise<void> {
+  async _createAccount(account: Account): Promise<void> {
     try {
       const docRef = await addDoc(this.accountCollection, account);
       console.log('Account created with ID:', docRef.id);
