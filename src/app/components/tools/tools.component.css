@@ -1,0 +1,81 @@
+.item-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 16px;
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+  }
+  
+  .tool-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    object-position: center;
+    transition: opacity 0.3s ease;
+  }
+
+  .status {
+    font-weight: bold;
+    font-size: 1rem;
+  }
+  
+  .available {
+    color: #6B8E23; 
+  }
+  
+  .unavailable {
+    color: #8B4513; 
+  }
+  .card-title {
+    color: #6B8E23; 
+    font-size: 1.4rem;
+  }
+  .item-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-width: 100%;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  button {
+    background-color: #6B8E23; /* Earthy Green */
+    color: #fff;  /* White text */
+    font-size: .8rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 10px;
+    margin-top: 10px;
+    width: 100%; /* Make buttons take full width of their container */
+    max-width: 200px; /* Limit the maximum width of the buttons */
+    display: block; /* Make buttons block level for full-width styling */
+    margin-left: auto; /* Center align */
+    margin-right: auto; /* Center align */
+  }
+  
+  button:hover {
+    background-color: #4B703F; /* Darker Earthy Green for hover effect */
+    transform: scale(1.05); /* Slight scale effect on hover */
+  }
+
+  mat-card {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+  
+  mat-card-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
