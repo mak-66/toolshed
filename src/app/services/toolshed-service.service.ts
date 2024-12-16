@@ -1,6 +1,6 @@
 // Import necessary Firebase modules
 import { Injectable, inject } from '@angular/core';
-import { Timestamp, query, orderBy, addDoc, getDoc, setDoc, updateDoc, Firestore, doc, collection, collectionData, CollectionReference } from '@angular/fire/firestore';
+import { Timestamp, query, orderBy, where, addDoc, deleteDoc, getDoc, getDocs, setDoc, updateDoc, Firestore, doc, collection, collectionData, CollectionReference } from '@angular/fire/firestore';
 import { User, Auth, getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "@angular/fire/auth";
 import { Observable, firstValueFrom } from 'rxjs';
 
@@ -84,27 +84,40 @@ export class toolshedService {
       throw error; // Rethrow the error for the caller to handle
     }
   }  
-
   
-  async addTool(newTool: Omit<Tool, 'id'>): Promise<string> {
+  async addTool(newTool: Partial<Tool>): Promise<string> {
     try {
-      const toolDocRef = doc(this.toolCollection); // Create a reference with an auto-generated ID
+      // Create a reference with an auto-generated ID for the new tool
+      const toolDocRef = doc(this.toolCollection);
       const id = toolDocRef.id; // Get the generated ID
-
+  
       // Add the tool to Firestore, including the generated ID
       await setDoc(toolDocRef, {
         ...newTool,
         ownerPublicName: this.currentAccount?.publicName,
         communityCode: this.currentAccount?.communityCode,
         id, // Add the generated ID to the document
-      });      
+      });
+  
       console.log('Tool successfully added with ID:', id);
-      return(id);
+  
+      // Now, update the owner's 'ownedTools' field in their account document
+      if (this.currentAccount) {
+        const accountDocRef = doc(this.firestore, 'Accounts', this.currentAccount.email);
+        // Update the 'ownedTools' array by adding the new tool ID
+        await updateDoc(accountDocRef, {
+          ownedTools: [...this.currentAccount.ownedTools, id],
+        });
+        console.log('Owner\'s ownedTools updated successfully');
+      }
+  
+      return id; // Return the ID of the newly added tool
     } catch (error) {
       console.error('Error adding tool:', error);
     }
-    return("Failed to add tool");
+    return "Failed to add tool";
   }
+  
 
   async updateTool(toolId: string, updates: Partial<Tool>): Promise<void> {
     try {
@@ -125,7 +138,66 @@ export class toolshedService {
       throw error; // Rethrow the error to be handled by the caller
     }
   }
+
+  async deleteTool(toolId: string): Promise<void> {
+    try {
+      if (!this.currentAccount) {
+        throw new Error('No current account is logged in');
+      }
   
+      // 1. Delete the tool from the "Tools" collection
+      const toolDocRef = doc(this.firestore, 'Tools', toolId);
+      await deleteDoc(toolDocRef);
+      console.log(`Tool with ID ${toolId} deleted successfully.`);
+  
+      // 2. Remove the tool's ID from the owner's "ownedTools" array
+      const updatedOwnedTools = this.currentAccount.ownedTools.filter(id => id !== toolId);
+      const accountDocRef = doc(this.firestore, 'Accounts', this.currentAccount.email);
+      await updateDoc(accountDocRef, { ownedTools: updatedOwnedTools });
+      console.log(`Owner's ownedTools updated successfully after deleting tool ${toolId}`);
+    } catch (error) {
+      console.error('Error deleting tool:', error);
+      throw error;  // Rethrow the error to be handled by the caller
+    }
+  }
+  
+
+  async fetchAccountTools(): Promise<Tool[]> {
+    try {
+      if (!this.currentAccount) {
+        throw new Error('No current account is logged in');
+      }
+      
+      // Retrieve the owned tool IDs from the current account
+      const ownedToolIds = this.currentAccount.ownedTools;
+      
+      if (ownedToolIds.length === 0) {
+        return []; // No owned tools
+      }
+      
+      // Fetch all tools from Firestore that match the ownedToolIds
+      const toolsQuery = query(
+        this.toolCollection,
+        where('id', 'in', ownedToolIds) // Filter tools by the ownedToolIds
+      );
+      
+      // Get the tools matching the query
+      const querySnapshot = await getDocs(toolsQuery);
+      
+      if (querySnapshot.empty) {
+        return []; // No tools found
+      }
+
+      // Map the document snapshots to Tool objects
+      const tools: Tool[] = querySnapshot.docs.map(doc => doc.data() as Tool);
+
+      return tools;
+    } catch (error) {
+      console.error('Error fetching account tools:', error);
+      throw error;
+    }
+  }
+
   //Creates the user for authentication, then calls createAccount to update the database
   async createUser(email: string, password: string, newAccount: Account): Promise<void> {
     createUserWithEmailAndPassword(this.auth, email, password)
@@ -155,16 +227,20 @@ export class toolshedService {
 
   async updateAccount(email: string, updates: Partial<Account>): Promise<void> {
     try {
-      // Query Firestore for the account document
-      const accountDocRef = doc(this.firestore, 'accounts', email); 
-      const accountSnap = await getDoc(accountDocRef);
-
-      if (!accountSnap.exists()) {
+      // Create a query to find the account with the given email
+      const accountCollectionRef = collection(this.firestore, 'Accounts');
+      const q = query(accountCollectionRef, where('email', '==', email));
+  
+      // Execute the query
+      const querySnapshot = await getDocs(q);
+  
+      if (querySnapshot.empty) {
         throw new Error(`Account with email ${email} does not exist`);
       }
-
-      // Update the document with the new data
-      await updateDoc(accountDocRef, updates);
+  
+      // Assuming there is only one document with that email
+      const accountDocRef = querySnapshot.docs[0].ref;  // Get the reference to the first document found
+      await updateDoc(accountDocRef, updates);  // Update the document with the provided changes
       console.log('Account updated successfully');
     } catch (error) {
       console.error('Error updating account:', error);

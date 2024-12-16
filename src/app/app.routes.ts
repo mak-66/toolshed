@@ -5,6 +5,7 @@ import { TooldetailComponent } from './components/tooldetail/tooldetail.componen
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
+import { ToolsComponent } from './components/tools/tools.component';
 import { AuthGuard } from './auth.guard';
 export const routes: Routes = [
     { path: '', component: LoginComponent },
@@ -12,6 +13,7 @@ export const routes: Routes = [
     { path: 'upload', component: UploadPageComponent, canActivate: [AuthGuard] }, 
     { path: 'tooldetail/:id', component: TooldetailComponent, canActivate: [AuthGuard] }, 
     { path: 'profilepage', component: ProfilePageComponent, canActivate: [AuthGuard] },  
+    { path: 'tools', component: ToolsComponent, canActivate: [AuthGuard]},
     { path: 'signup', component: SignupComponent },
     { path: '**', redirectTo: '' },
 ];

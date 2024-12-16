@@ -41,15 +41,15 @@ export class UploadPageComponent {
   // Method to add the tool based on user input
   addToolFromInput() {
     if (this.toolName && this.toolDescription) {
-      const newTool: Tool = {
-        id: "placeholder",
+      const newTool: Partial<Tool> = {
+        // id: "placeholder",
         name: this.toolName,
         description: this.toolDescription,
         image: this.toolImage,
-        ownerPublicName: "",
+        // ownerPublicName: "placeholder",
         availabilityStatus: this.toolAvailabilityStatus,  // Use user input for availability status
         waitlist: [],
-        communityCode: "",
+        // communityCode: "placeholder",
         timestamp: Timestamp.fromDate(new Date())
       };
 

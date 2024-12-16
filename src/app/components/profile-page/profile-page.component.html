@@ -6,67 +6,58 @@
   <title>Tool List</title>
 </head>
 <body>
-    <mat-toolbar class="toolbar"> 
-        <span>
-          <mat-icon>home</mat-icon>
-          <a routerLink="/shed">Shed</a>
-          <mat-icon>about</mat-icon>
-          <a routerLink="/upload">Upload</a>
-          <mat-icon>profile</mat-icon>
-          <a routerLink="/profilepage">Profile</a>
-        </span>
-    
-      </mat-toolbar>
-      <div class="profile-container">
-        <mat-card class="profile-card">
-          <mat-card-header>
-            <mat-card-title>Your Profile</mat-card-title>
-          </mat-card-header>
-      
+  <mat-toolbar class="toolbar"> 
+    <span>
+      <mat-icon>home</mat-icon>
+      <a routerLink="/shed">Shed</a>
+      <mat-icon>about</mat-icon>
+      <a routerLink="/upload">Upload</a>
+      <mat-icon>tools</mat-icon>
+      <a routerLink="/tools">Tools</a>
+      <mat-icon>profile</mat-icon>
+      <a routerLink="/profilepage">Profile</a>
+    </span>
+  </mat-toolbar>
+  
+    <div class="profile-container">
+      <!-- Display current account information -->
+      <div class="current-info">
+        <h2>Current Account Information</h2>
+        <mat-card>
           <mat-card-content>
-            <form #profileForm="ngForm">
-              <!-- Public Name -->
-              <mat-form-field appearance="fill" class="input-field">
-                <mat-label>Public Name</mat-label>
-                <input matInput [(ngModel)]="account.publicName" name="publicName" required />
-              </mat-form-field>
-      
-              <!-- Email (Read-Only) -->
-              <mat-form-field appearance="fill" class="input-field" disabled>
-                <mat-label>Email</mat-label>
-                <input matInput [value]="account.email" name="email" readonly />
-              </mat-form-field>
-      
-              <!-- Phone Number -->
-              <mat-form-field appearance="fill" class="input-field">
-                <mat-label>Phone Number</mat-label>
-                <input matInput [(ngModel)]="account.phoneNumber" name="phoneNumber" required />
-              </mat-form-field>
-      
-              <!-- Public Address -->
-              <mat-form-field appearance="fill" class="input-field">
-                <mat-label>Public Address</mat-label>
-                <textarea matInput [(ngModel)]="account.publicAddress" name="publicAddress"></textarea>
-              </mat-form-field>
-      
-              <!-- Community Code -->
-              <mat-form-field appearance="fill" class="input-field">
-                <mat-label>Community Code</mat-label>
-                <input matInput [(ngModel)]="account.communityCode" name="communityCode" required />
-              </mat-form-field>
-      
-              <!-- Owned Tools -->
-              <mat-card-subtitle>Owned Tools</mat-card-subtitle>
-              <ul>
-                <li *ngFor="let tool of account.ownedTools">{{ tool }}</li>
-              </ul>
-            </form>
+            <p><strong>Email:</strong> {{ account.email }}</p>
+            <p><strong>Public Name:</strong> {{ account.publicName }}</p>
+            <p><strong>Phone Number:</strong> {{ account.phoneNumber || 'Not provided' }}</p>
+            <p><strong>Community Code:</strong> {{ account.communityCode || 'Not provided' }}</p>
           </mat-card-content>
-      
-          <mat-card-actions>
-            <button mat-raised-button color="primary" (click)="updateProfile()">Update Profile</button>
-          </mat-card-actions>
         </mat-card>
       </div>
+    
+      <h2>Update Profile</h2>
+      <!-- Profile update form -->
+      <form (ngSubmit)="updateProfile()">
+        <!-- Public Name Field -->
+        <mat-form-field appearance="fill">
+          <mat-label>Public Name</mat-label>
+          <input matInput [(ngModel)]="account.publicName" name="publicName" required />
+        </mat-form-field>
+
+        <!-- Phone Number Field -->
+        <mat-form-field appearance="fill">
+          <mat-label>Phone Number</mat-label>
+          <input matInput [(ngModel)]="account.phoneNumber" name="phoneNumber" />
+        </mat-form-field>
+
+        <!-- Community Code Field -->
+        <mat-form-field appearance="fill">
+          <mat-label>Community Code</mat-label>
+          <input matInput [(ngModel)]="account.communityCode" name="communityCode" />
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="!account.publicName || !account.phoneNumber">
+          Update Profile
+        </button>
+      </form>
+    </div>
 </body>
 </html>
