@@ -248,6 +248,35 @@ export class toolshedService {
     }
   }
 
+  async enterWaitlist(toolId: string, currentAccount: Account): Promise<void> {
+    try {
+      const toolDocRef = doc(this.firestore, 'Tools', toolId);
+      const currTool = await getDoc(toolDocRef);
+      
+      if (!currTool.exists()) {
+        throw new Error(`Tool with ID ${toolId} does not exist`);
+      }
+  
+      const tool = currTool.data() as Tool;
+
+      // if (tool.waitlist && tool.waitlist.includes(currentAccount.publicName)) {
+      //   console.log('User is already in the waitlist or no waitlist exists.');
+      //   alert('You are already in the waitlist.');
+      //   return;
+      // }
+  
+      // Add the current account to the waitlist
+      const updatedWaitlist = tool.waitlist ? [...tool.waitlist, currentAccount.publicName] : [currentAccount.publicName];
+  
+      // Update the tool document with the new waitlist
+      await updateDoc(toolDocRef, { waitlist: updatedWaitlist });
+      console.log('Waitlist updated successfully');
+  
+    } catch (error) {
+      console.error('Error entering waitlist:', error);
+    }
+  }
+
   async login (email: string, password: string): Promise<boolean> {
     try {
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);

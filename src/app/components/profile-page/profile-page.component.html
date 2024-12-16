@@ -6,18 +6,19 @@
   <title>Tool List</title>
 </head>
 <body>
-  <mat-toolbar class="toolbar"> 
-    <span>
-      <mat-icon>home</mat-icon>
-      <a routerLink="/shed">Shed</a>
-      <mat-icon>about</mat-icon>
-      <a routerLink="/upload">Upload</a>
-      <mat-icon>tools</mat-icon>
-      <a routerLink="/tools">Tools</a>
-      <mat-icon>profile</mat-icon>
-      <a routerLink="/profilepage">Profile</a>
-    </span>
-  </mat-toolbar>
+  <div class="header-container">
+    <h1>The Tool Shed</h1>
+    <mat-toolbar class="toolbar">
+      <span class="bar">
+        <mat-icon>warehouse</mat-icon>
+        <a routerLink="/shed" class="item-link">Shed</a>
+        <mat-icon>upload</mat-icon>
+        <a routerLink="/upload" class="item-link">Upload</a>
+        <mat-icon>person</mat-icon>
+        <a routerLink="/profilepage" class="item-link">Profile</a>
+      </span>
+    </mat-toolbar>
+  </div>
   
     <div class="profile-container">
       <!-- Display current account information -->
@@ -39,19 +40,19 @@
         <!-- Public Name Field -->
         <mat-form-field appearance="fill">
           <mat-label>Public Name</mat-label>
-          <input matInput [(ngModel)]="account.publicName" name="publicName" required />
+          <input matInput [(ngModel)]="account.publicName" name="publicName" type="text" placeholder="Public Name" required />
         </mat-form-field>
 
         <!-- Phone Number Field -->
         <mat-form-field appearance="fill">
           <mat-label>Phone Number</mat-label>
-          <input matInput [(ngModel)]="account.phoneNumber" name="phoneNumber" />
+          <input matInput [(ngModel)]="account.phoneNumber" name="phoneNumber" placeholder="Phone Number" type="text"/>
         </mat-form-field>
 
         <!-- Community Code Field -->
         <mat-form-field appearance="fill">
           <mat-label>Community Code</mat-label>
-          <input matInput [(ngModel)]="account.communityCode" name="communityCode" />
+          <input matInput [(ngModel)]="account.communityCode" name="communityCode" placeholder="Community Code" type="text"/>
         </mat-form-field>
 
         <button mat-raised-button color="primary" type="submit" [disabled]="!account.publicName || !account.phoneNumber">

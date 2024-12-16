@@ -1,7 +1,7 @@
 import { Component, input, inject, computed } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { toolshedService, Tool } from '../../services/toolshed-service.service';
+import { toolshedService, Tool, Account } from '../../services/toolshed-service.service';
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { Timestamp } from 'firebase/firestore';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -13,18 +13,19 @@ import { MatCardModule } from '@angular/material/card';
   selector: 'app-tooldetail',
   imports: [AsyncPipe, DatePipe, MatToolbarModule, MatIconModule, MatCardModule, RouterLink],
   templateUrl: './tooldetail.component.html',
-  styleUrl: './tooldetail.component.css'
+  styleUrls: ['./tooldetail.component.css']
 })
 export class TooldetailComponent {
-  id = input<string>('');
-  toolshedService = inject(toolshedService);
-  currTool: Tool | undefined;
+  id = input<string>(''); // ID of the tool
+  toolshedService = inject(toolshedService); // Inject toolshedService
+  currTool: Tool | undefined; // The current tool
+  currentAccount: Account | undefined; // The current user's account
 
-  constructor(){}
+  constructor() {}
 
   ngOnInit(): void {
-    // Ensure you await the fetchTool method to get the resolved tool
     this.loadTool();
+    this.loadCurrentAccount();
   }
 
   async loadTool() {
@@ -32,11 +33,38 @@ export class TooldetailComponent {
       this.currTool = await this.toolshedService.fetchTool(this.id());
       if (this.currTool) {
         console.log('Fetched tool:', this.currTool);
+        console.log('Current tool waitlist:', this.currTool.waitlist);
       } else {
         console.log('Tool not found.');
       }
     } catch (error) {
       console.error('Error fetching tool:', error);
+    }
+  }
+
+  async loadCurrentAccount() {
+    try {
+      if (this.toolshedService.currentAccount) {
+        this.currentAccount = this.toolshedService.currentAccount;
+      } else {
+        console.log('No current account found');
+      }
+    } catch (error) {
+      console.error('Error loading current account:', error);
+    }
+  }
+
+  async enterWaitlist() {
+    if (!this.currTool || !this.currentAccount) {
+      console.log('Tool or account not available');
+      return;
+    }
+
+    try {
+      await this.toolshedService.enterWaitlist(this.currTool.id, this.currentAccount);
+      console.log('Entered waitlist successfully');
+    } catch (error) {
+      console.error('Error entering waitlist:', error);
     }
   }
 }

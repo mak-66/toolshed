@@ -6,21 +6,22 @@
   <title>Tool Upload</title>
 </head>
 <body>
-  <mat-toolbar class="toolbar"> 
-    <span>
-      <mat-icon>home</mat-icon>
-      <a routerLink="/shed">Shed</a>
-      <mat-icon>about</mat-icon>
-      <a routerLink="/upload">Upload</a>
-      <mat-icon>tools</mat-icon>
-      <a routerLink="/tools">Tools</a>
-      <mat-icon>profile</mat-icon>
-      <a routerLink="/profilepage">Profile</a>
-    </span>
-  </mat-toolbar>
-  <h1>Upload Tool</h1>
+  <div class="header-container">
+    <h1 class="top">The Tool Shed</h1>
+    <mat-toolbar class="toolbar">
+        <span class="bar">
+            <mat-icon>warehouse</mat-icon>
+            <a routerLink="/shed" class="item-link">Shed</a>
+            <mat-icon>upload</mat-icon>
+            <a routerLink="/upload" class="item-link">Upload</a>
+            <mat-icon>person</mat-icon>
+            <a routerLink="/profilepage" class="item-link">Profile</a>
+        </span>
+    </mat-toolbar>
+  </div>
+  <h1 class="upload">Upload Tool</h1>
   <!-- Tool upload form -->
-  <div>
+  <div class="form-contents">
     <form (ngSubmit)="addToolFromInput()">
       <label for="toolName">Tool Name:</label>
       <input id="toolName" [(ngModel)]="toolName" name="toolName" type="text" placeholder="Enter tool name" required />

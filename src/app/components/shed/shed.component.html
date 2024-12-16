@@ -1,44 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> 
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tool List</title>
 </head>
 <body>
-    <mat-toolbar class="toolbar"> 
-        <span>
-          <mat-icon>home</mat-icon>
-          <a routerLink="/shed">Shed</a>
-          <mat-icon>about</mat-icon>
-          <a routerLink="/upload">Upload</a>
-          <mat-icon>tools</mat-icon>
-          <a routerLink="/tools">Tools</a>
-          <mat-icon>profile</mat-icon>
-          <a routerLink="/profilepage">Profile</a>
+  <div class="header-container">
+    <h1>The Tool Shed</h1>
+    <mat-toolbar class="toolbar">
+        <span class="bar">
+          <mat-icon>warehouse</mat-icon>
+          <a routerLink="/shed" class="item-link">Shed</a>
+          <mat-icon>upload</mat-icon>
+          <a routerLink="/upload" class="item-link">Upload</a>
+          <mat-icon>person</mat-icon>
+          <a routerLink="/profilepage" class="item-link">Profile</a>
+          <mat-icon>handyman</mat-icon>
+          <a routerLink="/tools" class="item-link">Tools</a>
         </span>
-    
-      </mat-toolbar>
+    </mat-toolbar>
+  </div>
     <ul class="item-grid">
         @for(tool of toolshedService.tools$ | async; track $index){
-            <a [routerLink]="'/tooldetail/' + tool.id" class = "item-link">
+            <a [routerLink]="'/tooldetail/' + tool.id" class="item-link">
                 <mat-card class="item-card">                
-                    <mat-card-header>                
-                        <mat-card-title class="card-title">{{ tool.name }}</mat-card-title>
-                        <mat-card-subtitle class="status">{{ tool.availabilityStatus ? 'Available' : 'Unavailable' }}</mat-card-subtitle>
+                    <mat-card-header>            
+                      <img mat-card-image [src]="tool.image" alt="{{ tool.name }}" class="tool-image" [ngClass]="{ 'grayscale': !tool.availabilityStatus }"/>    
                     </mat-card-header>
-                    
+                   
                     <mat-card-content>
-                        <img mat-card-sm-image [src]="tool.image" alt="{{ tool.name }}" class="tool-image" />
-                        <p>Owner: {{ tool.ownerPublicName }}</p>
+                      <mat-card-title class="card-title">{{ tool.name }}</mat-card-title>
+                      <mat-card-subtitle [ngClass]="{'available': tool.availabilityStatus, 'unavailable': !tool.availabilityStatus}" class="status">
+                        {{ tool.availabilityStatus ? 'Available' : 'Unavailable' }}</mat-card-subtitle>
+                      <p>Owner: {{ tool.ownerPublicName }}</p>
                     </mat-card-content>
-                    </mat-card>
+                </mat-card>
             </a>
         }
-  
-    <li>No more products available</li>
-    
-  </ul>
-  <router-outlet />
+ 
+        <li>No more products available</li>
+    </ul>
+    <router-outlet />
 </body>
 </html>
