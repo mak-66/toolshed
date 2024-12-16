@@ -4,6 +4,7 @@ import { Timestamp, query, orderBy, setDoc, Firestore, doc, collection, collecti
 import { User, Auth, getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "@angular/fire/auth";
 
 import { Observable } from 'rxjs';
+import { Time } from '@angular/common';
 
 // Define data models
 export interface Account {
@@ -12,16 +13,19 @@ export interface Account {
   publicName: string;
   email: string;
   phoneNumber: string;
+  communityCode: string;
 }
 
 export interface Tool {
   id: string;
   name: string;
-  imageUrl: string;
+  image: string;
   description: string;
   ownerPublicName: string;
   availabilityStatus: boolean;
   waitlist?: User[];
+  communityCode: string;
+  timestamp: Timestamp;
 }
 
 @Injectable({
@@ -31,6 +35,14 @@ export class toolshedService {
   firestore: Firestore = inject(Firestore);
   auth: Auth = getAuth();
   user: User | null = null;
+  currentAccount: Account | null = {
+    ownedTools: [],
+    publicAddress: "testAddress",
+    publicName: "testName",
+    email: "testEmail",
+    phoneNumber: "testPhoneNumber",
+    communityCode: "000000"
+  }; //TODO: link login with current Account
   toolCollection: CollectionReference;
   accountCollection: CollectionReference;
   // reviewCollection: CollectionReference;
@@ -64,8 +76,9 @@ export class toolshedService {
       // Add the tool to Firestore, including the generated ID
       await setDoc(toolDocRef, {
         ...newTool,
+        ownerPublicName: this.currentAccount?.publicName,
+        communityCode: this.currentAccount?.communityCode,
         id, // Add the generated ID to the document
-        timestamp: Timestamp.fromDate(new Date()), // Optionally include a timestamp
       });      
       console.log('Tool successfully added with ID:', id);
       return(id);

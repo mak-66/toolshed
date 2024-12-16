@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { toolshedService, Tool } from '../../services/toolshed-service.service';
 import { FormsModule } from '@angular/forms';
+import { Timestamp } from 'firebase/firestore';
 
 @Component({
   selector: 'app-upload-page',
@@ -15,8 +16,23 @@ export class UploadPageComponent {
   toolName: string = '';
   toolDescription: string = '';
   toolOwner: string = '';
-  toolImageUrl: string = '';
+  toolImage: string = '';
   toolAvailabilityStatus: boolean = true; // Default status can be set to 'true' (available)
+
+  handleImageUpload(event: Event) {
+    const file = (event.target as HTMLInputElement)?.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.toolImage = reader.result as string; // Store the Base64 string
+        console.log('Image converted to Base64:', this.toolImage);
+      };
+      reader.onerror = (error) => {
+        console.error('Error converting image to Base64:', error);
+      };
+      reader.readAsDataURL(file); // Convert file to Base64
+    }
+  }
 
   // Method to add the tool based on user input
   addToolFromInput() {
@@ -25,10 +41,12 @@ export class UploadPageComponent {
         id: "placeholder",
         name: this.toolName,
         description: this.toolDescription,
-        imageUrl: 'https://example.com/hammer.jpg',
-        ownerPublicName: this.toolOwner,  // Can be dynamically set if needed
+        image: this.toolImage,
+        ownerPublicName: "",
         availabilityStatus: this.toolAvailabilityStatus,  // Use user input for availability status
-        waitlist: []
+        waitlist: [],
+        communityCode: "",
+        timestamp: Timestamp.fromDate(new Date())
       };
 
       // Call the addTool method to add the tool to Firestore
@@ -52,7 +70,7 @@ export class UploadPageComponent {
     this.toolName = '';
     this.toolDescription = '';
     this.toolOwner = '';
-    this.toolImageUrl = '';
+    this.toolImage = '';
     this.toolAvailabilityStatus = true;
   }
 }

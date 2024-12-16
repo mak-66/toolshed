@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { toolshedService, Tool, User } from './services/toolshed-service.service';
+import { toolshedService, Tool, Account } from './services/toolshed-service.service';
 import {TaskbarComponent} from './components/taskbar/taskbar.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';

@@ -17,8 +17,8 @@
       <label for="toolDescription">Description:</label>
       <textarea id="toolDescription" [(ngModel)]="toolDescription" name="toolDescription" placeholder="Enter tool description" required></textarea>
 
-      <label for="toolOwner">Owner:</label>
-      <input id="toolOwner" [(ngModel)]="toolOwner" name="toolOwner" type="text" placeholder="Enter tool owner" required />
+      <label for="toolImage">Upload Tool Image:</label>
+      <input type="file" id="toolImage" (change)="handleImageUpload($event)" />   
 
       <label for="toolAvailabilityStatus">
         <input id="toolAvailabilityStatus" [(ngModel)]="toolAvailabilityStatus" name="toolAvailabilityStatus" type="checkbox" /> Available
