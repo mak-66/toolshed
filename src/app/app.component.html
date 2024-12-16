@@ -3,27 +3,11 @@
 <head> 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- <title>Tool List</title> -->
-   <title>ToolShed</title>
 </head>
 <body>
-  <h1>Tool Shed</h1>
-  @if(toolshedService.currentAccount != null  ){
+  @if(toolshedService.currentAccount != null){
     <app-taskbar></app-taskbar>
-    <!-- <mat-toolbar class="toolbar"> 
-      <span>
-        <mat-icon>home</mat-icon>
-        <a routerLink="/shed">Shed</a>
-        <mat-icon>about</mat-icon>
-        <a routerLink="/upload">Upload</a>
-        <mat-icon>tools</mat-icon>
-        <a routerLink="/tools">Tools</a>
-        <mat-icon>profile</mat-icon>
-        <a routerLink="/profilepage">Profile</a>
-      </span>
-    </mat-toolbar> -->
   }
-  
   <router-outlet />
 </body>
 </html>

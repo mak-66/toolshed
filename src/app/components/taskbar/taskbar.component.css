@@ -1,32 +1,47 @@
-.taskbar {
-    width: 100%;
-    background-color: #333;
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: 10px 0;
-    z-index: 1000; 
-  }
-  
-  .taskbar ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .taskbar li {
-    margin: 0 20px;
-  }
-  
-  .taskbar a {
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-  }
-  
-  .taskbar a:hover {
-    text-decoration: underline;
-  }
-  
+/* Make the title and toolbar appear on the same line */
+.header-container {
+  display: flex;                      /* Use flexbox to align items in a row */
+  justify-content: space-between;      /* Space out the title and toolbar */
+  align-items: center;                /* Vertically center the items */
+  padding: 10px 20px;                 /* Add some padding around */
+  background-color: #FFFFFF;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #6B8E23;
+  margin: 0;                           /* Remove margin for the title */
+  font-size: 2rem;                     /* Adjust font size for the title */
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* Toolbar styling */
+.toolbar {
+  display: flex;                      /* Use flexbox for toolbar links */
+  justify-content: flex-start;           /* Align toolbar items to the left */
+  align-items: center;                 /* Vertically center the items */
+  margin-left: 50px;
+}
+
+.toolbar span {
+  display: flex;                      /* Flexbox for toolbar content */
+  gap: 70px;                          /* Space between items */
+}
+
+.toolbar mat-icon {
+  color: #6B8E23;
+  margin-right: -60px;                   /* Space between icon and link */
+}
+
+.toolbar a {
+  text-decoration: none;
+  color: #333333; /* Default text color */
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.toolbar a:hover {
+  color: #87CEEB; /* Sky Blue for hover effect */
+}

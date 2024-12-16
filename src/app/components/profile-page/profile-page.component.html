@@ -26,19 +26,19 @@
         <!-- Public Name Field -->
         <mat-form-field appearance="fill">
           <mat-label>Public Name</mat-label>
-          <input matInput [(ngModel)]="account.publicName" name="publicName" required />
+          <input matInput [(ngModel)]="account.publicName" name="publicName" type="text" placeholder="Public Name" required />
         </mat-form-field>
 
         <!-- Phone Number Field -->
         <mat-form-field appearance="fill">
           <mat-label>Phone Number</mat-label>
-          <input matInput [(ngModel)]="account.phoneNumber" name="phoneNumber" />
+          <input matInput [(ngModel)]="account.phoneNumber" name="phoneNumber" placeholder="Phone Number" type="text"/>
         </mat-form-field>
 
         <!-- Community Code Field -->
         <mat-form-field appearance="fill">
           <mat-label>Community Code</mat-label>
-          <input matInput [(ngModel)]="account.communityCode" name="communityCode" />
+          <input matInput [(ngModel)]="account.communityCode" name="communityCode" placeholder="Community Code" type="text"/>
         </mat-form-field>
 
         <button mat-raised-button color="primary" type="submit" [disabled]="!account.publicName || !account.phoneNumber">

@@ -1,56 +1,173 @@
 /* Center the entire content block */
-div {
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #ffffff; /* Light background */
+  color: #333333; /* Default text color */
+  margin: 0;
+  padding: 0;
+}
+
+/* Make the title and toolbar appear on the same line */
+.header-container {
+  display: flex;                      /* Use flexbox to align items in a row */
+  justify-content: space-between;      /* Space out the title and toolbar */
+  align-items: center;                /* Vertically center the items */
+  padding: 10px 20px;                 /* Add some padding around */
+  background-color: #FFFFFF;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #6B8E23;
+  margin: 0;                           /* Remove margin for the title */
+  font-size: 2rem;                     /* Adjust font size for the title */
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* Toolbar styling */
+.toolbar {
+  display: flex;                      /* Use flexbox for toolbar links */
+  justify-content: flex-start;           /* Align toolbar items to the left */
+  align-items: center;                 /* Vertically center the items */
+  margin-left: 50px;
+}
+
+.toolbar span {
+  display: flex;                      /* Flexbox for toolbar content */
+  gap: 70px;                          /* Space between items */
+}
+
+.toolbar mat-icon {
+  color: #6B8E23;
+  margin-right: -60px;                   /* Space between icon and link */
+}
+
+.toolbar a {
+  text-decoration: none;
+  color: #333333; /* Default text color */
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.toolbar a:hover {
+  color: #87CEEB; /* Sky Blue for hover effect */
+}
+
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+  list-style: none;
+  padding: 10px;
+  margin: 0;
+}
+
+.status {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.available {
+  color: #6B8E23; /* Earthy Green for available */
+}
+
+.unavailable {
+  color: #8B4513; /* Earthy Brown for unavailable */
+}
+
+.card-title {
+  color: #6B8E23; /* Earthy Green for titles */
+  font-size: 1.4rem;
+}
+
+.item-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 100%;
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Horizontally center the content */
-    justify-content: center; /* Vertically center the content */
+    align-items: center; 
+    justify-content: center; 
     padding: 20px;
     background-color: #e8e8e8;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-    width: 80%; /* Adjust width as needed */
-    max-width: 900px; /* Optional: Set a max width for large screens */
-    margin: 1em auto; /* Center the block horizontally on the page */
+    width: 90%; 
+    max-width: 1200px; 
+    margin: 1em auto; 
   }
   
-  h2 {
-    font-size: 2rem;
-    color: #333;
-    margin-bottom: 15px;
-    text-align: center; /* Center the title */
-  }
-  
-  p {
-    font-size: 1.2rem;
-    color: #555;
-    margin: 5px 0;
-    text-align: center; /* Center text for description, owner, etc. */
-  }
-  
-  ul {
-    list-style-type: none;
-    padding: 0;
-    text-align: center; /* Center the list items */
-  }
-  
-  ul li {
-    font-size: 1.1rem;
-    color: #333;
-    padding: 5px;
-    margin: 5px 0;
-    background-color: #f4f4f4;
-    border-radius: 4px;
-    display: inline-block; /* Display list items inline */
-  }
-  
-  .tool-image {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin-top: 10px;
-  }
-  
-  strong {
-    font-weight: bold;
-  }
-  
+  /* Center the entire content block */
+.tool-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; 
+  justify-content: flex-start; 
+  padding: 20px;
+  background-color: #e8e8e8;
+  border-radius: 8px;
+  box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+  width: 95%; 
+  max-width: 900px; 
+  margin: 1em auto; 
+}
+
+h2 {
+  font-size: 2rem;
+  color: #6B8E23;
+  margin-bottom: 15px;
+}
+
+p {
+  font-size: 1.2rem;
+  color: #555;
+  margin: 5px 0;
+  text-align: left;
+  word-wrap: break-word; 
+  width: 100%; 
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  text-align: left; 
+}
+
+ul li {
+  font-size: 1.1rem;
+  color: #333;
+  padding: 5px;
+  margin: 5px 0;
+  background-color: #e8e8e8;
+  border-radius: 4px;
+  display: block; 
+}
+
+.tool-image {
+  max-width: 100%;
+  max-height: 500px;
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 10px;
+  object-fit: cover;
+  object-position: center;
+  transition: opacity 0.3s ease;
+  margin-bottom: 15px; 
+}
+
+strong {
+  font-weight: bold;
+  color: #6B8E23;
+}

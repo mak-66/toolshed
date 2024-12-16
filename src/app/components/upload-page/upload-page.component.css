@@ -10,9 +10,62 @@ body {
     height: 100vh;
     flex-direction: column;
   }
+
+  .top {
+    font-size: 2.5rem;
+    color: #6B8E23;
+    margin: 0;                           /* Remove margin for the title */
+    font-size: 2rem;                     /* Adjust font size for the title */
+    white-space: nowrap;
+    text-align: center;
+    padding: 10px 20px;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .upload {
+    color: #6B8E23;
+  }
+  
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px 10px;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .toolbar {
+    display: flex;                      /* Use flexbox for toolbar links */
+    justify-content: flex-start;           /* Align toolbar items to the left */
+    align-items: center;                 /* Vertically center the items */
+    margin-left: 30px;
+  }
+  
+  .toolbar span {
+    display: flex;                      /* Flexbox for toolbar content */
+    gap: 70px;                          /* Space between items */
+  }
+  
+  .toolbar mat-icon {
+    color: #6B8E23;
+    margin-right: -60px;                   /* Space between icon and link */
+  }
+  
+  .toolbar a {
+    text-decoration: none;
+    color: #333333; /* Default text color */
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  
+  .toolbar a:hover {
+    color: #87CEEB; /* Sky Blue for hover effect */
+  }
   
   /* Container to center the form */
-  div {
+  .form-contents {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
@@ -50,7 +103,7 @@ body {
     border: 1px solid #ddd;
     border-radius: 6px;
     font-size: 1rem;
-    color: #333;
+    color: #8B4513;
     transition: border 0.3s;
     box-sizing: border-box;
   }

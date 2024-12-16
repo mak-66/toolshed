@@ -1,0 +1,84 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #F4F4F4;
+    color: #333333;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Make the title and toolbar appear on the same line */
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1 {
+    font-size: 2rem;
+    color: #6B8E23;
+    margin: 0;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  h2 {
+    color: #6B8E23;
+  }
+  
+  /* Toolbar styling */
+  .toolbar {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 50px;
+    padding: 18px 16px;
+    width: 100%
+  }
+  
+  .toolbar span {
+    display: flex;
+    gap: 70px; /* Space between items */
+  }
+  
+  .toolbar mat-icon {
+    color: #6B8E23;
+    margin-right: -60px; /* Space between icon and link */
+  }
+  
+  .toolbar a {
+    text-decoration: none;
+    color: #333333;
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  
+  .toolbar a:hover {
+    color: #87CEEB; /* Sky Blue for hover effect */
+  }
+  
+  /* Profile container styling (optional) */
+  .profile-container {
+    padding: 20px;
+  }
+  
+  input[type="text"],
+  textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: #8B4513;
+    transition: border 0.3s;
+    box-sizing: border-box;
+  }
+
+  input[type="text"]:focus,
+  textarea:focus {
+    border-color: #007BFF;
+    outline: none;
+  }

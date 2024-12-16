@@ -1,36 +1,28 @@
 <body>
-<mat-toolbar class="toolbar"> 
-    <span>
-      <mat-icon>home</mat-icon>
-      <a routerLink="/shed">Shed</a>
-      <mat-icon>upload</mat-icon>
-      <a routerLink="/upload">Upload</a>
-      <mat-icon>tools</mat-icon>
-      <a routerLink="/tools">Tools</a>
-      <mat-icon>profile</mat-icon>
-      <a routerLink="/profilepage">Profile</a>
-    </span>
-  </mat-toolbar>
-
-@if(currTool){
-    <div>
-        <h2>{{ currTool.name }}</h2>
-        <img [src]="currTool.image" alt="{{ currTool.name }}" />
-        <p><strong>Description:</strong> {{ currTool.description }}</p>
-        <p><strong>Owner:</strong> {{ currTool.ownerPublicName }}</p>
-        <p><strong>Status:</strong> {{ currTool.availabilityStatus ? 'Available' : 'Unavailable' }}</p>
-        <p><strong>Community Code:</strong> {{ currTool.communityCode }}</p>
-        <p><strong>Added:</strong> {{ currTool.timestamp.toDate() | date: 'short' }}</p>
-
-        <p><strong>Waiting List:</strong></p>
-        <ul>
-            @for(account of currTool.waitlist; track account){
-                <li>{{ account.publicName }}</li>
-            }            
-        </ul>
-    </div> 
-}
-</body>
+    @if(currTool){
+        <div class="card">
+            <h2>{{ currTool.name }}</h2>
+            <img [src]="currTool.image" alt="{{ currTool.name }}" class="tool-image" />
+            <div class="tool-details">
+                <p><strong>Description:</strong> {{ currTool.description }}</p>
+                <p><strong>Owner:</strong> {{ currTool.ownerPublicName }}</p>
+                <p><strong>Status:</strong> {{ currTool.availabilityStatus ? 'Available' : 'Unavailable' }}</p>
+                <p><strong>Community Code:</strong> {{ currTool.communityCode }}</p>
+                <p><strong>Added:</strong> {{ currTool.timestamp.toDate() | date: 'short' }}</p>
     
+    
+                <p><strong>Waiting List:</strong></p>
+                <ul class="waitlist-text">
+                    @for(account of currTool.waitlist; track account){
+                        <li> — {{ account }}</li>
+                    }            
+                </ul>
+                <button mat-raised-button color="primary" (click)="enterWaitlist()">
+                    Enter Waitlist
+                </button>
+            </div>
+        </div>
+    }
+    </body>
  
     
