@@ -19,7 +19,6 @@ export class UploadPageComponent {
   // User input properties
   toolName: string = '';
   toolDescription: string = '';
-  toolOwner: string = '';
   toolImage: string = '';
   toolAvailabilityStatus: boolean = true; // Default status can be set to 'true' (available)
 
@@ -40,7 +39,7 @@ export class UploadPageComponent {
 
   // Method to add the tool based on user input
   addToolFromInput() {
-    if (this.toolName && this.toolDescription && this.toolOwner) {
+    if (this.toolName && this.toolDescription) {
       const newTool: Tool = {
         id: "placeholder",
         name: this.toolName,
@@ -73,7 +72,6 @@ export class UploadPageComponent {
   clearInputs() {
     this.toolName = '';
     this.toolDescription = '';
-    this.toolOwner = '';
     this.toolImage = '';
     this.toolAvailabilityStatus = true;
   }
