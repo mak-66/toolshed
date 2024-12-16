@@ -13,5 +13,5 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  
+  toolshedService = inject(toolshedService);
 }

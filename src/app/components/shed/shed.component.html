@@ -6,19 +6,6 @@
   <title>Tool List</title>
 </head>
 <body>
-    <mat-toolbar class="toolbar"> 
-        <span>
-          <mat-icon>home</mat-icon>
-          <a routerLink="/shed">Shed</a>
-          <mat-icon>about</mat-icon>
-          <a routerLink="/upload">Upload</a>
-          <mat-icon>tools</mat-icon>
-          <a routerLink="/tools">Tools</a>
-          <mat-icon>profile</mat-icon>
-          <a routerLink="/profilepage">Profile</a>
-        </span>
-    
-      </mat-toolbar>
     <ul class="item-grid">
         @for(tool of toolshedService.tools$ | async; track $index){
             <a [routerLink]="'/tooldetail/' + tool.id" class = "item-link">
