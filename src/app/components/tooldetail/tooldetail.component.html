@@ -1,1 +1,21 @@
-<p>tooldetail works! {{id()}}</p>
+@if(currTool){
+    <div>
+        <h2>{{ currTool.name }}</h2>
+        <img [src]="currTool.image" alt="{{ currTool.name }}" />
+        <p><strong>Description:</strong> {{ currTool.description }}</p>
+        <p><strong>Owner:</strong> {{ currTool.ownerPublicName }}</p>
+        <p><strong>Status:</strong> {{ currTool.availabilityStatus ? 'Available' : 'Unavailable' }}</p>
+        <p><strong>Community Code:</strong> {{ currTool.communityCode }}</p>
+        <p><strong>Added:</strong> {{ currTool.timestamp.toDate() | date: 'short' }}</p>
+
+        <p><strong>Waiting List:</strong></p>
+        <ul>
+            @for(account of currTool.waitlist; track account){
+                <li>{{ account.publicName }}</li>
+            }            
+        </ul>
+    </div> 
+}
+    
+ 
+    
