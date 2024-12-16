@@ -4,10 +4,14 @@ import { Observable } from 'rxjs';
 import { toolshedService, Tool } from '../../services/toolshed-service.service';
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { Timestamp } from 'firebase/firestore';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-tooldetail',
-  imports: [AsyncPipe, DatePipe],
+  imports: [AsyncPipe, DatePipe, MatToolbarModule, MatIconModule, MatCardModule, RouterLink],
   templateUrl: './tooldetail.component.html',
   styleUrl: './tooldetail.component.css'
 })
