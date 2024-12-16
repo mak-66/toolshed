@@ -42,6 +42,31 @@
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
+
+  button {
+    background-color: #6B8E23; /* Earthy Green */
+    color: #fff;  /* White text */
+    font-size: .8rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 10px;
+    margin-top: 10px;
+    width: 100%; /* Make buttons take full width of their container */
+    max-width: 200px; /* Limit the maximum width of the buttons */
+    display: block; /* Make buttons block level for full-width styling */
+    margin-left: auto; /* Center align */
+    margin-right: auto; /* Center align */
+  }
+  
+  button:hover {
+    background-color: #4B703F; /* Darker Earthy Green for hover effect */
+    transform: scale(1.05); /* Slight scale effect on hover */
+  }
+
   mat-card {
     display: flex;
     flex-direction: column;
