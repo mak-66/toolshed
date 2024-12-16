@@ -3,10 +3,10 @@
 <head> 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profile</title>
+  <title>Tool List</title>
 </head>
 <body>
-    <mat-toolbar class="profile"> 
+    <mat-toolbar class="toolbar"> 
         <span>
           <mat-icon>home</mat-icon>
           <a routerLink="/shed">Shed</a>
@@ -15,6 +15,58 @@
           <mat-icon>profile</mat-icon>
           <a routerLink="/profilepage">Profile</a>
         </span>
+    
       </mat-toolbar>
-<p>profile-page works!</p>
+      <div class="profile-container">
+        <mat-card class="profile-card">
+          <mat-card-header>
+            <mat-card-title>Your Profile</mat-card-title>
+          </mat-card-header>
+      
+          <mat-card-content>
+            <form #profileForm="ngForm">
+              <!-- Public Name -->
+              <mat-form-field appearance="fill" class="input-field">
+                <mat-label>Public Name</mat-label>
+                <input matInput [(ngModel)]="account.publicName" name="publicName" required />
+              </mat-form-field>
+      
+              <!-- Email (Read-Only) -->
+              <mat-form-field appearance="fill" class="input-field" disabled>
+                <mat-label>Email</mat-label>
+                <input matInput [value]="account.email" name="email" readonly />
+              </mat-form-field>
+      
+              <!-- Phone Number -->
+              <mat-form-field appearance="fill" class="input-field">
+                <mat-label>Phone Number</mat-label>
+                <input matInput [(ngModel)]="account.phoneNumber" name="phoneNumber" required />
+              </mat-form-field>
+      
+              <!-- Public Address -->
+              <mat-form-field appearance="fill" class="input-field">
+                <mat-label>Public Address</mat-label>
+                <textarea matInput [(ngModel)]="account.publicAddress" name="publicAddress"></textarea>
+              </mat-form-field>
+      
+              <!-- Community Code -->
+              <mat-form-field appearance="fill" class="input-field">
+                <mat-label>Community Code</mat-label>
+                <input matInput [(ngModel)]="account.communityCode" name="communityCode" required />
+              </mat-form-field>
+      
+              <!-- Owned Tools -->
+              <mat-card-subtitle>Owned Tools</mat-card-subtitle>
+              <ul>
+                <li *ngFor="let tool of account.ownedTools">{{ tool }}</li>
+              </ul>
+            </form>
+          </mat-card-content>
+      
+          <mat-card-actions>
+            <button mat-raised-button color="primary" (click)="updateProfile()">Update Profile</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
 </body>
+</html>
