@@ -39,6 +39,22 @@ export class ToolsComponent {
     }
   }
 
+  async toggleAvailability(tool: Tool): Promise<void> {
+    try {
+      const newAvailabilityStatus = !tool.availabilityStatus;
+      await this.toolshedService.updateTool(tool.id, { availabilityStatus: newAvailabilityStatus });
+
+      // Update the local state
+      this.tools = this.tools.map(t =>
+        t.id === tool.id ? { ...t, availabilityStatus: newAvailabilityStatus } : t
+      );
+
+      console.log(`Tool ${tool.name} marked as ${newAvailabilityStatus ? 'available' : 'unavailable'}.`);
+    } catch (error) {
+      console.error('Error toggling tool availability:', error);
+    }
+  }
+
   // Delete a tool
   async deleteTool(toolId: string): Promise<void> {
     try {
