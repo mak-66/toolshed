@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import {  Router } from '@angular/router';
 import { toolshedService, Tool } from '../../services/toolshed-service.service';
@@ -8,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-tools',
-  imports: [MatIconModule, MatCardModule, MatFormFieldModule],
+  imports: [MatIconModule, MatCardModule, MatFormFieldModule, CommonModule],
   templateUrl: './tools.component.html',
   styleUrl: './tools.component.css'
 })
