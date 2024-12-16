@@ -2,9 +2,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Timestamp, query, orderBy, setDoc, Firestore, doc, collection, collectionData, CollectionReference } from '@angular/fire/firestore';
 import { User, Auth, getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "@angular/fire/auth";
-
-import { Observable } from 'rxjs';
-import { Time } from '@angular/common';
+import { Observable, firstValueFrom } from 'rxjs';
 
 // Define data models
 export interface Account {
@@ -23,7 +21,7 @@ export interface Tool {
   description: string;
   ownerPublicName: string;
   availabilityStatus: boolean;
-  waitlist?: User[];
+  waitlist?: Account[];
   communityCode: string;
   timestamp: Timestamp;
 }
@@ -66,6 +64,16 @@ export class toolshedService {
       this.user = currentUser;
       console.log('Auth state changed, user is now:', this.user);
     });
+  }
+
+  async fetchTool(id: string): Promise<Tool | undefined> {
+    try {
+      const tools = await firstValueFrom(this.tools$); // Get the latest value of the tools observable
+      return tools.find((tool) => tool.id === id);
+    } catch (error) {
+      console.error('Error fetching tool:', error);
+      return undefined;
+    }
   }
   
   async addTool(newTool: Omit<Tool, 'id'>): Promise<string> {

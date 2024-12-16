@@ -8,7 +8,7 @@
 <body>
     <ul class="item-grid">
         @for(tool of toolshedService.tools$ | async; track $index){
-            <a [routerLink]="'/tooldetail' + tool.id" class = "item-link">
+            <a [routerLink]="'/tooldetail/' + tool.id" class = "item-link">
                 <mat-card class="item-card">                
                     <mat-card-header>                
                         <mat-card-title class="card-title">{{ tool.name }}</mat-card-title>

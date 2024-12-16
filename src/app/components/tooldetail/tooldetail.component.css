@@ -1,0 +1,56 @@
+/* Center the entire content block */
+div {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Horizontally center the content */
+    justify-content: center; /* Vertically center the content */
+    padding: 20px;
+    background-color: #e8e8e8;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    width: 80%; /* Adjust width as needed */
+    max-width: 900px; /* Optional: Set a max width for large screens */
+    margin: 1em auto; /* Center the block horizontally on the page */
+  }
+  
+  h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center; /* Center the title */
+  }
+  
+  p {
+    font-size: 1.2rem;
+    color: #555;
+    margin: 5px 0;
+    text-align: center; /* Center text for description, owner, etc. */
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: center; /* Center the list items */
+  }
+  
+  ul li {
+    font-size: 1.1rem;
+    color: #333;
+    padding: 5px;
+    margin: 5px 0;
+    background-color: #f4f4f4;
+    border-radius: 4px;
+    display: inline-block; /* Display list items inline */
+  }
+  
+  .tool-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 10px;
+  }
+  
+  strong {
+    font-weight: bold;
+  }
+  
