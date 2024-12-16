@@ -59,12 +59,26 @@ export class TooldetailComponent {
       console.log('Tool or account not available');
       return;
     }
-
     try {
       await this.toolshedService.enterWaitlist(this.currTool.id, this.currentAccount);
       console.log('Entered waitlist successfully');
+      this.loadTool();
     } catch (error) {
       console.error('Error entering waitlist:', error);
+    }
+  }
+
+  async exitWaitlist() {
+    if (!this.currTool || !this.currentAccount) {
+      console.log('Tool or account not available');
+      return;
+    }
+    try {
+      await this.toolshedService.exitWaitlist(this.currTool.id, this.currentAccount);
+      console.log('Exited waitlist successfully');
+      this.loadTool();
+    } catch (error) {
+      console.error('Error exiting waitlist:', error);
     }
   }
 }
