@@ -1,17 +1,13 @@
 import { Component, input, inject, computed } from '@angular/core';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 import { toolshedService, Tool, Account } from '../../services/toolshed-service.service';
-import { AsyncPipe, DatePipe } from '@angular/common';
-import { Timestamp } from 'firebase/firestore';
+import { DatePipe } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-tooldetail',
-  imports: [AsyncPipe, DatePipe, MatToolbarModule, MatIconModule, MatCardModule, RouterLink],
+  imports: [DatePipe, MatToolbarModule, MatIconModule, MatCardModule],
   templateUrl: './tooldetail.component.html',
   styleUrls: ['./tooldetail.component.css']
 })

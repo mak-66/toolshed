@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { toolshedService, Tool } from '../../services/toolshed-service.service';
 import { FormsModule } from '@angular/forms';
 import { Timestamp } from 'firebase/firestore';
-import { RouterOutlet, RouterLink } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
@@ -11,7 +10,7 @@ import { MatCardModule } from '@angular/material/card';
   selector: 'app-upload-page',
   templateUrl: './upload-page.component.html',
   styleUrls: ['./upload-page.component.css'],
-  imports: [FormsModule, MatToolbarModule, MatIconModule, MatCardModule, RouterOutlet, RouterLink, ],
+  imports: [FormsModule, MatToolbarModule, MatIconModule, MatCardModule ],
 })
 export class UploadPageComponent {
   toolshedService = inject(toolshedService);

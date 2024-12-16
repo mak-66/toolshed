@@ -1,17 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { MatToolbar } from '@angular/material/toolbar';
-import { RouterLink, Router } from '@angular/router';
+import {  Router } from '@angular/router';
 import { toolshedService, Tool } from '../../services/toolshed-service.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDialog } from '@angular/material/dialog';
-import { NgModel } from '@angular/forms';
 
 
 @Component({
   selector: 'app-tools',
-  imports: [MatIconModule, MatToolbar, RouterLink, MatCardModule, MatFormFieldModule],
+  imports: [MatIconModule, MatCardModule, MatFormFieldModule],
   templateUrl: './tools.component.html',
   styleUrl: './tools.component.css'
 })
@@ -31,6 +28,7 @@ export class ToolsComponent {
     try {
       // Get the current account's tools
       const tools = await this.toolshedService.fetchAccountTools();
+      console.log('tools: ', tools);
       this.tools = tools; // Store the tools in the component's state
     } catch (error) {
       console.error('Error loading tools:', error);
