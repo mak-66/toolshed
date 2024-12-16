@@ -26,10 +26,13 @@ export class ToolsComponent {
   // Fetch user's tools
   async loadUserTools(): Promise<void> {
     try {
-      // Get the current account's tools
-      const tools = await this.toolshedService.fetchAccountTools();
-      console.log('tools: ', tools);
-      this.tools = tools; // Store the tools in the component's state
+      if(this.toolshedService.currentAccount){
+        // Get the current account's tools
+        this.toolshedService.fetchAccount(this.toolshedService.currentAccount?.email);
+        const tools = await this.toolshedService.fetchAccountTools();
+        console.log('tools: ', tools);
+        this.tools = tools; // Store the tools in the component's state
+      }
     } catch (error) {
       console.error('Error loading tools:', error);
     }

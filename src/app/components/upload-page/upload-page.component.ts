@@ -60,6 +60,8 @@ export class UploadPageComponent {
           console.error('Error adding tool:', error);
         });
 
+      this.toolshedService.fetchAccount(this.toolshedService.currentAccount!.email)
+
       // Optionally, clear the input fields after submission
       this.clearInputs();
     } else {

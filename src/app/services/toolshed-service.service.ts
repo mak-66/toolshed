@@ -33,7 +33,7 @@ export class toolshedService {
   firestore: Firestore = inject(Firestore);
   auth: Auth = getAuth();
   user: User | null = null;
-  currentAccount: Account | null = null; //TODO: link login with current Account
+  currentAccount: Account | null = null;
   toolCollection: CollectionReference;
   accountCollection: CollectionReference;
   public tools$: Observable<Tool[]>; // Observable for live updates
@@ -123,8 +123,15 @@ export class toolshedService {
         });
       
         console.log("Owner's 'ownedTools' updated successfully");
+
+        // Update the local `currentAccount` to reflect the change
+        this.currentAccount = {
+          ...this.currentAccount,
+          ownedTools: [...this.currentAccount.ownedTools, id],
+        };
+
+        console.log('Local currentAccount updated successfully');
       }
-  
       return id; // Return the ID of the newly added tool
     } catch (error) {
       console.error('Error adding tool:', error);
@@ -164,11 +171,31 @@ export class toolshedService {
       await deleteDoc(toolDocRef);
       console.log(`Tool with ID ${toolId} deleted successfully.`);
   
-      // 2. Remove the tool's ID from the owner's "ownedTools" array
+      // 2. Query the "Accounts" collection to find the current user's document
+      const accountsQuery = query(
+        collection(this.firestore, 'Accounts'),
+        where('email', '==', this.currentAccount.email)
+      );
+      const querySnapshot = await getDocs(accountsQuery);
+
+      if (querySnapshot.empty) {
+        throw new Error(`No account found with email: ${this.currentAccount.email}`);
+      }
+
+      // Get the first document reference from the query result
+      const accountDocRef = querySnapshot.docs[0].ref;
+
+      // 3. Remove the tool's ID from the owner's "ownedTools" array
       const updatedOwnedTools = this.currentAccount.ownedTools.filter(id => id !== toolId);
-      const accountDocRef = doc(this.firestore, 'Accounts', this.currentAccount.email);
       await updateDoc(accountDocRef, { ownedTools: updatedOwnedTools });
       console.log(`Owner's ownedTools updated successfully after deleting tool ${toolId}`);
+
+      // 4. Update the local `currentAccount` to reflect the deletion
+      this.currentAccount = {
+        ...this.currentAccount,
+        ownedTools: updatedOwnedTools,
+      };
+      console.log('Local currentAccount updated successfully');
     } catch (error) {
       console.error('Error deleting tool:', error);
       throw error;  // Rethrow the error to be handled by the caller
@@ -182,6 +209,7 @@ export class toolshedService {
         throw new Error('No current account is logged in');
       }
       
+      console.log(this.currentAccount)
       // Retrieve the owned tool IDs from the current account
       const ownedToolIds = this.currentAccount.ownedTools;
       

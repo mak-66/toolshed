@@ -10,7 +10,8 @@
     @for(tool of tools; track tool) {
         <mat-card>
             <mat-card-header>
-              <mat-card-title>{{ tool }}</mat-card-title>
+              <mat-card-title>{{ tool.name }}</mat-card-title>
+              <img mat-card-image [src]="tool.image" alt="{{ tool.name }}" >
             </mat-card-header>
             <mat-card-content>
               <p>{{ tool.description }}</p>
