@@ -5,13 +5,13 @@ import { TooldetailComponent } from './components/tooldetail/tooldetail.componen
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
-
+import { AuthGuard } from './auth.guard';
 export const routes: Routes = [
     { path: '', component: LoginComponent },
-    { path: 'shed', component: ShedComponent },
-    { path: 'upload', component: UploadPageComponent },
-    { path: 'tooldetail/:id', component: TooldetailComponent},
-    { path: 'profilepage', component: ProfilePageComponent},
+    { path: 'shed', component: ShedComponent, canActivate: [AuthGuard] }, 
+    { path: 'upload', component: UploadPageComponent, canActivate: [AuthGuard] }, 
+    { path: 'tooldetail/:id', component: TooldetailComponent, canActivate: [AuthGuard] }, 
+    { path: 'profilepage', component: ProfilePageComponent, canActivate: [AuthGuard] },  
     { path: 'signup', component: SignupComponent },
     { path: '**', redirectTo: '' },
-  ];
+];

@@ -18,5 +18,7 @@ export class SignupComponent {
   username: string = '';
   password: string = '';
 
-   isAuthenticated$ = computed(() => !!this.username && !!this.password);
+  onSignUp(){
+    
+  }
 }

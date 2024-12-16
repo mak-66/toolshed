@@ -8,7 +8,7 @@
       <!-- Username Field -->
       <mat-form-field appearance="fill" class="input-field">
         <mat-label>Username</mat-label>
-        <input matInput [(ngModel)]="username" placeholder="Enter your username" required />
+        <input matInput [(ngModel)]="email" placeholder="Enter your email" required />
       </mat-form-field>
 
       <!-- Password Field -->
@@ -18,7 +18,11 @@
       </mat-form-field>
 
       <!-- Login Button -->
-      <button mat-raised-button color="primary">Login</button>
+      <button mat-raised-button color="primary" (click)="onLogin()">Login</button>
+
+      @if(!loginSuccess){
+        <p>Login Failed</p>
+      }
 
       <!-- Sign up Link -->
       <div class="signup-link">

@@ -1,6 +1,6 @@
 // Import necessary Firebase modules
 import { Injectable, inject } from '@angular/core';
-import { Timestamp, query, orderBy, setDoc, Firestore, doc, collection, collectionData, CollectionReference } from '@angular/fire/firestore';
+import { Timestamp, query, orderBy, addDoc, getDoc, setDoc, updateDoc, Firestore, doc, collection, collectionData, CollectionReference } from '@angular/fire/firestore';
 import { User, Auth, getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "@angular/fire/auth";
 import { Observable, firstValueFrom } from 'rxjs';
 
@@ -33,17 +33,9 @@ export class toolshedService {
   firestore: Firestore = inject(Firestore);
   auth: Auth = getAuth();
   user: User | null = null;
-  currentAccount: Account | null = {
-    ownedTools: [],
-    publicAddress: "testAddress",
-    publicName: "testName",
-    email: "testEmail",
-    phoneNumber: "testPhoneNumber",
-    communityCode: "000000"
-  }; //TODO: link login with current Account
+  currentAccount: Account | null = null; //TODO: link login with current Account
   toolCollection: CollectionReference;
   accountCollection: CollectionReference;
-  // reviewCollection: CollectionReference;
   public tools$: Observable<Tool[]>; // Observable for live updates
   public accounts$: Observable<Account[]>; // Observable for live updates
   // public reviews$: Observable<Review[]>; // Observable for live updates
@@ -75,6 +67,24 @@ export class toolshedService {
       return undefined;
     }
   }
+
+  async fetchAccount(email: string): Promise<Account> {
+    try {
+      // Get the latest value of the accounts observable
+      const accounts = await firstValueFrom(this.accounts$);  
+      // Find the account with the matching email
+      const account = accounts.find((account) => account.email === email);  
+      // Since the account is guaranteed to exist, throw an error if it isn't found
+      if (!account) {
+        throw new Error(`Account with email ${email} not found`);      }
+  
+      return account;
+    } catch (error) {
+      console.error('Error fetching account:', error);
+      throw error; // Rethrow the error for the caller to handle
+    }
+  }  
+
   
   async addTool(newTool: Omit<Tool, 'id'>): Promise<string> {
     try {
@@ -96,12 +106,14 @@ export class toolshedService {
     return("Failed to add tool");
   }
 
-  async createUser(email: string, password: string): Promise<void> {
+  //Creates the user for authentication, then calls createAccount to update the database
+  async createUser(email: string, password: string, newAccount: Account): Promise<void> {
     createUserWithEmailAndPassword(this.auth, email, password)
       .then((userCredential) => {
         // Signed up 
         this.user = userCredential.user;
         console.log('User successfully created:', this.user);
+        this.createAccount(newAccount);
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -110,18 +122,55 @@ export class toolshedService {
       });
   }
 
-  async login (email: string, password: string): Promise<void> {
-    signInWithEmailAndPassword(this.auth, email, password)
-      .then((userCredential) => {
-        // Signed in 
-        this.user = userCredential.user;
-        console.log('User logged in:', this.user);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
+  // creates the account document
+  async createAccount(account: Account): Promise<void> {
+    try {
+      const docRef = await addDoc(this.accountCollection, account);
+      console.log('Account created with ID:', docRef.id);
+    } catch (error) {
+      console.error('Error creating account:', error);
+      throw error;
+    }
+  }
+
+  async updateAccount(email: string, updates: Partial<Account>): Promise<void> {
+    try {
+      // Query Firestore for the account document
+      const accountDocRef = doc(this.firestore, 'accounts', email); 
+      const accountSnap = await getDoc(accountDocRef);
+
+      if (!accountSnap.exists()) {
+        throw new Error(`Account with email ${email} does not exist`);
+      }
+
+      // Update the document with the new data
+      await updateDoc(accountDocRef, updates);
+      console.log('Account updated successfully');
+    } catch (error) {
+      console.error('Error updating account:', error);
+      throw error;
+    }
+  }
+
+  async login (email: string, password: string): Promise<boolean> {
+    try {
+      const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
+      this.user = userCredential.user;
+      console.log('User logged in:', this.user);
+      this.currentAccount = await this.fetchAccount(email)
+      return true;  // Return true on successful login
+    } catch (error) {
+      if (error instanceof Error && 'code' in error) {
+        const firebaseError = error as { code: string, message: string }; // Cast to a more specific error type
+        const errorCode = firebaseError.code;  // Now you can safely access `code`
+        const errorMessage = firebaseError.message;
+        console.log('Firebase Error Code:', errorCode, 'Message:', errorMessage);
+      } else {
+        // Handle case where the error isn't an instance of Error (for robustness)
+        console.log('An unknown error occurred', error);
+      }
+      return false;  // Return false if there is an error
+    }
   }
 
   async logout(): Promise<void>{
