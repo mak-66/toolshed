@@ -82,3 +82,23 @@ body {
     border-color: #007BFF;
     outline: none;
   }
+
+  button {
+    background-color: #6B8E23; 
+    color: #fff;  
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 10px;
+    width: 100%; 
+    max-width: 200px; 
+  }
+  
+  button:hover {
+    background-color: #4B703F; 
+    transform: scale(1.02); 
+  }

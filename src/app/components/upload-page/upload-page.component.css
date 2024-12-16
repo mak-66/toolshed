@@ -14,8 +14,8 @@ body {
   .top {
     font-size: 2.5rem;
     color: #6B8E23;
-    margin: 0;                           /* Remove margin for the title */
-    font-size: 2rem;                     /* Adjust font size for the title */
+    margin: 0; 
+    font-size: 2rem; 
     white-space: nowrap;
     text-align: center;
     padding: 10px 20px;
@@ -37,34 +37,33 @@ body {
   }
 
   .toolbar {
-    display: flex;                      /* Use flexbox for toolbar links */
-    justify-content: flex-start;           /* Align toolbar items to the left */
-    align-items: center;                 /* Vertically center the items */
+    display: flex; 
+    justify-content: flex-start; 
+    align-items: center; 
     margin-left: 30px;
   }
   
   .toolbar span {
-    display: flex;                      /* Flexbox for toolbar content */
-    gap: 70px;                          /* Space between items */
+    display: flex;
+    gap: 70px; 
   }
   
   .toolbar mat-icon {
     color: #6B8E23;
-    margin-right: -60px;                   /* Space between icon and link */
+    margin-right: -60px;
   }
   
   .toolbar a {
     text-decoration: none;
-    color: #333333; /* Default text color */
+    color: #333333; 
     font-weight: bold;
     font-size: 1.2rem;
   }
   
   .toolbar a:hover {
-    color: #87CEEB; /* Sky Blue for hover effect */
+    color: #87CEEB; 
   }
   
-  /* Container to center the form */
   .form-contents {
     background-color: #fff;
     padding: 20px;
@@ -78,14 +77,11 @@ body {
     
   }
 
-  
-  /* Heading styles */
   h1 {
     text-align: center;
     color: #333;
   }
   
-  /* Label styles */
   label {
     display: block;
     margin-bottom: 8px;
@@ -93,8 +89,7 @@ body {
     color: #555;
     font-weight: 500;
   }
-  
-  /* Input field styles */
+
   input[type="text"],
   textarea {
     width: 100%;
@@ -114,12 +109,10 @@ body {
     outline: none;
   }
   
-  /* Input styles for the checkbox */
   input[type="checkbox"] {
     margin-right: 10px;
   }
 
-  /* Button styles */
   button {
     width: 100%;
     padding: 12px;
@@ -141,13 +134,12 @@ body {
     cursor: not-allowed;
   }
   
-  /* Make sure textarea is responsive */
+  /* responsive text area apparently */
   textarea {
     resize: vertical;
     min-height: 100px;
   }
   
-  /* Optional: Add some space between input and button */
   button {
     margin-top: 10px;
   }

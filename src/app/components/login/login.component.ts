@@ -29,7 +29,7 @@ export class LoginComponent {
       console.log('Login successful');
       //redirect to a different page after successful login
       if(this.loginSuccess){
-        this.router.navigate(['/profilepage']);  // Navigate to the profile page
+        this.router.navigate(['/shed']);  // Navigate to the profile page
       }
     } catch (error) {
       console.error('Login failed:', error);
