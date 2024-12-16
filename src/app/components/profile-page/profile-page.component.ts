@@ -3,13 +3,10 @@ import { toolshedService, Account } from '../../services/toolshed-service.servic
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { MatToolbar } from '@angular/material/toolbar';
-import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-profile-page',
-  imports: [MatCardModule, MatFormFieldModule, MatFormFieldModule, FormsModule, RouterLink, MatToolbar, MatIcon],
+  imports: [MatCardModule, MatFormFieldModule, MatFormFieldModule, FormsModule],
   templateUrl: './profile-page.component.html',
   styleUrls: ['./profile-page.component.css'],
   
