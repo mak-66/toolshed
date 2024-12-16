@@ -10,7 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-shed',
-  imports: [RouterOutlet, AsyncPipe, MatToolbarModule, MatIconModule, MatCardModule, RouterLink],
+  imports: [RouterOutlet, AsyncPipe, MatToolbarModule, MatIconModule, MatCardModule, RouterLink,],
   templateUrl: './shed.component.html',
   styleUrl: './shed.component.css'
 })

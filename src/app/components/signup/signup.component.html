@@ -1,0 +1,31 @@
+<div class="signup-container">
+    <mat-card class="signup-card">
+      <mat-card-header>
+        <mat-card-title>Sign Up</mat-card-title>
+      </mat-card-header>
+  
+      <mat-card-content>
+        <!-- Username Field -->
+        <mat-form-field appearance="fill" class="input-field">
+          <mat-label>Username</mat-label>
+          <input matInput [(ngModel)]="username" placeholder="Enter a username" required />
+        </mat-form-field>
+  
+        <!-- Password Field -->
+        <mat-form-field appearance="fill" class="input-field">
+          <mat-label>Password</mat-label>
+          <input matInput [(ngModel)]="password" type="password" placeholder="Enter a password" required />
+        </mat-form-field>
+  
+        <!-- Sign Up Button -->
+        <button mat-raised-button color="primary">Sign Up</button>
+  
+        <!-- Already have an account? -->
+        <div class="login-link">
+          <span>Already have an account?</span>
+          <a routerLink="/">Login</a>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  

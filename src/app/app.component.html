@@ -8,23 +8,6 @@
 </head>
 <body>
   <h1>Tool Shed</h1>
-  <mat-toolbar class="toolbar"> 
-    <span>
-      <mat-icon>home</mat-icon>
-      <a routerLink="/shed">Shed</a>
-      <mat-icon>about</mat-icon>
-      <a routerLink="/upload">Upload</a>
-    </span>
-
-  </mat-toolbar>
-  <!--<button (click)="addRandomTool()">Add Random Tool</button>
-  @for(tool of toolshedService.tools$ | async; track $index){
-    <img [src]="tool.imageUrl" alt="{{ tool.name }}" class="tool-image" />
-    <h2>{{ tool.name }}</h2>
-    <p>{{ tool.description }}</p>
-    <p>Owner: {{ tool.ownerPublicName }}</p>
-    <p>Status: {{ tool.availabilityStatus ? 'Available' : 'Unavailable' }}</p>
-  } -->
   <router-outlet />
 </body>
 </html>

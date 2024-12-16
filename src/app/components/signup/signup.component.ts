@@ -6,18 +6,17 @@ import { RouterLink } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { toolshedService, Tool } from '../../services/toolshed-service.service';
-import { provideRouter } from '@angular/router';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-signup',
   imports: [MatToolbarModule, MatIconModule, MatCardModule, MatFormFieldModule, FormsModule, RouterLink],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  templateUrl: './signup.component.html',
+  styleUrl: './signup.component.css'
 })
-export class LoginComponent {
+export class SignupComponent {
   toolshedService = inject(toolshedService);
   username: string = '';
   password: string = '';
 
-  isAuthenticated$ = computed(() => !!this.username && !!this.password);
+   isAuthenticated$ = computed(() => !!this.username && !!this.password);
 }
