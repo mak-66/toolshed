@@ -6,6 +6,8 @@
             <div class="tool-details">
                 <p><strong>Description:</strong> {{ currTool.description }}</p>
                 <p><strong>Owner:</strong> {{ currTool.ownerPublicName }}</p>
+                <p><strong>Owner Email:</strong> {{ currTool.ownerEmail }}</p>
+                <p><strong>Owner Phone Number:</strong> {{ currTool.ownerPhoneNumber }}</p>
                 <p><strong>Status:</strong> {{ currTool.availabilityStatus ? 'Available' : 'Unavailable' }}</p>
                 <p><strong>Community Code:</strong> {{ currTool.communityCode }}</p>
                 <p><strong>Added:</strong> {{ currTool.timestamp.toDate() | date: 'short' }}</p>

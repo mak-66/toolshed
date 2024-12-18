@@ -1,4 +1,3 @@
-// Import necessary Firebase modules
 import { Injectable, inject } from '@angular/core';
 import { Timestamp, query, orderBy, where, addDoc, deleteDoc, getDoc, getDocs, setDoc, updateDoc, Firestore, doc, collection, collectionData, CollectionReference } from '@angular/fire/firestore';
 import { User, Auth, getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "@angular/fire/auth";
@@ -6,7 +5,6 @@ import { Observable, firstValueFrom,map,BehaviorSubject, combineLatest } from 'r
 import { Router } from '@angular/router';
 
 
-// Define data models
 export interface Account {
   ownedTools: string[];
   publicAddress: string;
@@ -22,6 +20,8 @@ export interface Tool {
   image: string;
   description: string;
   ownerPublicName: string;
+  ownerEmail: string;
+  ownerPhoneNumber: string;
   availabilityStatus: boolean;
   waitlist?: string[];
   communityCode: string;
@@ -39,9 +39,9 @@ export class toolshedService {
   currentAccount: Account | null = null;
   toolCollection: CollectionReference;
   accountCollection: CollectionReference;
-  public tools$: Observable<Tool[]>; // Observable for live updates
+  public tools$: Observable<Tool[]>; 
   public communityTools$: Observable<Tool[]>;
-  public accounts$: Observable<Account[]>; // Observable for live updates
+  public accounts$: Observable<Account[]>;
   
   constructor() {
     //fetches the tools
@@ -69,7 +69,6 @@ export class toolshedService {
           // Filter tools by the communityCode of the currentAccount
           return tools.filter(tool => tool.communityCode === communityCode);
         }
-        // If no currentAccount, return an empty array
         return [];
       })
     );
@@ -91,21 +90,19 @@ export class toolshedService {
         throw new Error('No current account is logged in');
       }
   
-      const communityCode = this.currentAccount.communityCode; // Get the user's community code
-  
+      const communityCode = this.currentAccount.communityCode;
       // Query tools belonging to the same community
       const toolsQuery = query(
         this.toolCollection,
-        where('communityCode', '==', communityCode) // Filter by community code
+        where('communityCode', '==', communityCode) 
       );
   
       const querySnapshot = await getDocs(toolsQuery);
   
       if (querySnapshot.empty) {
-        return []; // No tools found
+        return [];
       }
   
-      // Map the document snapshots to Tool objects
       const tools: Tool[] = querySnapshot.docs.map(doc => doc.data() as Tool);
       
       return tools;
@@ -122,34 +119,34 @@ export class toolshedService {
       const accounts = await firstValueFrom(this.accounts$);  
       // Find the account with the matching email
       const account = accounts.find((account) => account.email === email);  
-      // Since the account is guaranteed to exist, throw an error if it isn't found
       if (!account) {
         throw new Error(`Account with email ${email} not found`);      }
   
       return account;
     } catch (error) {
       console.error('Error fetching account:', error);
-      throw error; // Rethrow the error for the caller to handle
+      throw error;
     }
   }  
   
   async addTool(newTool: Partial<Tool>): Promise<string> {
     try {
-      // Create a reference with an auto-generated ID for the new tool
       const toolDocRef = doc(this.toolCollection);
       const id = toolDocRef.id; // Get the generated ID
   
       // Add the tool to Firestore, including the generated ID
       await setDoc(toolDocRef, {
         ...newTool,
-        ownerPublicName: this.currentAccount?.publicName,
-        communityCode: this.currentAccount?.communityCode,
-        id, // Add the generated ID to the document
+        ownerPublicName: this.currentAccount!.publicName,
+        communityCode: this.currentAccount!.communityCode,
+        ownerEmail: this.currentAccount!.email,
+        ownerPhoneNumber: this.currentAccount!.phoneNumber,
+        id,
       });
   
       console.log('Tool successfully added with ID:', id);
   
-      // Now, update the owner's 'ownedTools' field in their account document
+      // update the owner's 'ownedTools' field in their account document
       if (this.currentAccount) {  
         const accountsQuery = query(
           collection(this.firestore, 'Accounts'),
@@ -162,7 +159,6 @@ export class toolshedService {
           throw new Error(`No account found with email: ${this.currentAccount.email}`);
         }
       
-        // Get the first document from the query results
         const accountDocRef = querySnapshot.docs[0].ref;
       
         // Update the 'ownedTools' array by adding the new tool ID
@@ -180,7 +176,7 @@ export class toolshedService {
 
         console.log('Local currentAccount updated successfully');
       }
-      return id; // Return the ID of the newly added tool
+      return id;
     } catch (error) {
       console.error('Error adding tool:', error);
     }
@@ -204,7 +200,7 @@ export class toolshedService {
       console.log(`Tool with ID ${toolId} updated successfully.`);
     } catch (error) {
       console.error('Error updating tool:', error);
-      throw error; // Rethrow the error to be handled by the caller
+      throw error;
     }
   }
 
@@ -214,12 +210,12 @@ export class toolshedService {
         throw new Error('No current account is logged in');
       }
   
-      // 1. Delete the tool from the "Tools" collection
+      // Delete the tool from the "Tools" collection
       const toolDocRef = doc(this.firestore, 'Tools', toolId);
       await deleteDoc(toolDocRef);
       console.log(`Tool with ID ${toolId} deleted successfully.`);
   
-      // 2. Query the "Accounts" collection to find the current user's document
+      // Query the "Accounts" collection to find the current user's document
       const accountsQuery = query(
         collection(this.firestore, 'Accounts'),
         where('email', '==', this.currentAccount.email)
@@ -230,15 +226,14 @@ export class toolshedService {
         throw new Error(`No account found with email: ${this.currentAccount.email}`);
       }
 
-      // Get the first document reference from the query result
       const accountDocRef = querySnapshot.docs[0].ref;
 
-      // 3. Remove the tool's ID from the owner's "ownedTools" array
+      // Remove the tool's ID from the owner's "ownedTools" array
       const updatedOwnedTools = this.currentAccount.ownedTools.filter(id => id !== toolId);
       await updateDoc(accountDocRef, { ownedTools: updatedOwnedTools });
       console.log(`Owner's ownedTools updated successfully after deleting tool ${toolId}`);
 
-      // 4. Update the local `currentAccount` to reflect the deletion
+      // Update the local `currentAccount` to reflect the deletion
       this.currentAccount = {
         ...this.currentAccount,
         ownedTools: updatedOwnedTools,
@@ -246,7 +241,7 @@ export class toolshedService {
       console.log('Local currentAccount updated successfully');
     } catch (error) {
       console.error('Error deleting tool:', error);
-      throw error;  // Rethrow the error to be handled by the caller
+      throw error;
     }
   }
   
@@ -258,24 +253,21 @@ export class toolshedService {
       }
       
       console.log(this.currentAccount)
-      // Retrieve the owned tool IDs from the current account
       const ownedToolIds = this.currentAccount.ownedTools;
       
       if (ownedToolIds.length === 0) {
-        return []; // No owned tools
+        return [];
       }
       
       // Fetch all tools from Firestore that match the ownedToolIds
       const toolsQuery = query(
         this.toolCollection,
         where('id', 'in', ownedToolIds) // Filter tools by the ownedToolIds
-      );
-      
-      // Get the tools matching the query
+      );      
       const querySnapshot = await getDocs(toolsQuery);
       
       if (querySnapshot.empty) {
-        return []; // No tools found
+        return [];
       }
 
       // Map the document snapshots to Tool objects
@@ -317,19 +309,17 @@ export class toolshedService {
 
   async updateAccount(email: string, updates: Partial<Account>): Promise<void> {
     try {
-      // Create a query to find the account with the given email
+      // find the account with the given email
       const accountCollectionRef = collection(this.firestore, 'Accounts');
       const q = query(accountCollectionRef, where('email', '==', email));
-  
-      // Execute the query
-      const querySnapshot = await getDocs(q);
+        const querySnapshot = await getDocs(q);
   
       if (querySnapshot.empty) {
         throw new Error(`Account with email ${email} does not exist`);
       }
   
-      // Assuming there is only one document with that email
-      const accountDocRef = querySnapshot.docs[0].ref;  // Get the reference to the first document found
+      const accountDocRef = querySnapshot.docs[0].ref; 
+
       await updateDoc(accountDocRef, updates);  // Update the document with the provided changes
       console.log('Account updated successfully');
       
@@ -345,6 +335,7 @@ export class toolshedService {
       throw error;
     }
   }
+
   // Allows user to enter waitlist in tooldetails
   async enterWaitlist(toolId: string, currentAccount: Account): Promise<void> {
     try {
@@ -414,24 +405,23 @@ export class toolshedService {
       return true;  // Return true on successful login
     } catch (error) {
       if (error instanceof Error && 'code' in error) {
-        const firebaseError = error as { code: string, message: string }; // Cast to a more specific error type
-        const errorCode = firebaseError.code;  // Now you can safely access `code`
+        const firebaseError = error as { code: string, message: string }; 
+        const errorCode = firebaseError.code;
         const errorMessage = firebaseError.message;
         console.log('Firebase Error Code:', errorCode, 'Message:', errorMessage);
       } else {
-        // Handle case where the error isn't an instance of Error (for robustness)
+        // Handle case where the error isn't an instance of Error
         console.log('An unknown error occurred', error);
       }
-      return false;  // Return false if there is an error
+      return false;
     }
   }
 
   async logout(): Promise<void>{
     signOut(this.auth).then(() => {
-      // Sign-out successful.
       console.log('User logged out');
       this.currentAccount = null;
-      this.router.navigate(['/']);
+      this.router.navigate( ['/']);
     })
   }
 }
